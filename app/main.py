@@ -13,6 +13,11 @@ class HelloRequest(BaseModel):
     text: str
 
 
+class AddRequest(BaseModel):
+    a: int
+    b: int
+
+
 @app.get("/health")
 def health() -> dict[str, str]:
     return {"status": "ok"}
@@ -31,4 +36,9 @@ def echo(payload: EchoRequest) -> dict[str, str]:
 @app.post("/hello")
 def hello(payload: HelloRequest) -> dict[str, str]:
     return {"result": f"{payload.text} world"}
+
+
+@app.post("/add")
+def add(payload: AddRequest) -> dict[str, int]:
+    return {"sum": payload.a + payload.b}
 

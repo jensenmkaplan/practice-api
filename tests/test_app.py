@@ -24,3 +24,9 @@ def test_hello_endpoint_returns_hello_world() -> None:
     assert response.json() == {"result": "hello world"}
 
 
+def test_add_endpoint_returns_sum() -> None:
+    response = client.post("/add", json={"a": 2, "b": 3})
+    assert response.status_code == 200
+    assert response.json() == {"sum": 5}
+
+
