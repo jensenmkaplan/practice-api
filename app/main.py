@@ -74,7 +74,12 @@ def collect_dropbox_pdfs(payload: DropboxPdfRequest) -> dict[str, object]:
 
     dbx = dropbox.Dropbox(access_token)
 
-    folder = payload.folder_path if payload.folder_path.startswith("/") else f"/{payload.folder_path}"
+    # Normalize folder path: Dropbox expects "" for root, otherwise absolute like "/Folder/Sub"
+    folder_input = (payload.folder_path or "").strip()
+    if folder_input in ("", "/"):
+        folder = ""
+    else:
+        folder = folder_input if folder_input.startswith("/") else f"/{folder_input}"
 
     pdf_entries: list[FileMetadata] = []
     try:
