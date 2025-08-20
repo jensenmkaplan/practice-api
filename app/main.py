@@ -9,6 +9,10 @@ class EchoRequest(BaseModel):
     message: str
 
 
+class HelloRequest(BaseModel):
+    text: str
+
+
 @app.get("/health")
 def health() -> dict[str, str]:
     return {"status": "ok"}
@@ -23,4 +27,8 @@ def root() -> dict[str, str]:
 def echo(payload: EchoRequest) -> dict[str, str]:
     return {"echo": payload.message}
 
+
+@app.post("/hello")
+def hello(payload: HelloRequest) -> dict[str, str]:
+    return {"result": f"{payload.text} world"}
 
