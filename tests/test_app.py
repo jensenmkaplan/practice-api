@@ -30,3 +30,17 @@ def test_add_endpoint_returns_sum() -> None:
     assert response.json() == {"sum": 5}
 
 
+def test_dropbox_pdfs_without_token_returns_500() -> None:
+    # Ensure env var is not set during this test
+    import os
+
+    original = os.environ.pop("DROPBOX_ACCESS_TOKEN", None)
+    try:
+        response = client.post("/dropbox/pdfs", json={"folder_path": "/some/folder"})
+        assert response.status_code == 500
+        assert response.json()["detail"] == "DROPBOX_ACCESS_TOKEN not configured"
+    finally:
+        if original is not None:
+            os.environ["DROPBOX_ACCESS_TOKEN"] = original
+
+

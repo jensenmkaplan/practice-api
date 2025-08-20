@@ -41,6 +41,28 @@ practice-api/
 - Split routes into modules (e.g., `app/routers/`) as the API grows
 - Add tests with `pytest`
 
+### Dropbox endpoint
+Set `DROPBOX_ACCESS_TOKEN` in your environment (User or App token with files.content.read scope).
+
+Run locally:
+```bash
+export DROPBOX_ACCESS_TOKEN=YOUR_TOKEN
+uvicorn app.main:app --reload
+```
+
+Request:
+```bash
+curl -X POST "http://127.0.0.1:8000/dropbox/pdfs" \
+  -H "Content-Type: application/json" \
+  -d '{"folder_path": "/path/in/dropbox"}'
+```
+Response:
+```json
+{ "files": ["a.pdf", "nested/b.pdf"], "count": 2 }
+```
+
+On Render, add an Environment Variable `DROPBOX_ACCESS_TOKEN` in the service settings.
+
 ### Deploy to Render
 1. Push this repo to GitHub.
 2. Sign in to Render and create a new Web Service from your repo.
